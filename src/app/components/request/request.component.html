@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-center align-items-center">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-50 ef-form">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group mt-2">
+            <label for="departureCode" class="ef-form-label">Aeroporto di partenza:</label>
+            <input type="text" placeholder="Aeroporto di partenza.." id="departureCode" class="form-control" formControlName="departureCode" required />
+          </div>
+          <div class="form-group mt-2">
+            <label for="destinationCode" class="ef-form-label">Aeroporto di arrivo:</label>
+            <input type="text" placeholder="Aeroporto di arrivo.." id="destinationCode" class="form-control" formControlName="destinationCode" required />
+          </div>
+          <div class="form-group mt-2">
+            <label for="passengers" class="ef-form-label">Numero di passeggeri:</label>
+            <input type="number" placeholder="Numero di passeggeri" id="passengers" class="form-control" formControlName="passengers" required />
+          </div>
+          <div class="form-group mt-2">
+            <label for="flightClass" class="ef-form-label">Classe di volo:</label>
+            <select id="flightClass" class="form-control" formControlName="flightClass" required>
+              <option value="" disabled selected>Seleziona la classe di volo</option>
+              <option value="economy">Economy</option>
+              <option value="premium_economy">Premium Economy</option>
+              <option value="business">Business</option>
+              <option value="first">First</option>
+            </select>
+          </div>
+          <div class="form-group mt-2">
+            <label for="currency" class="ef-form-label">Valuta per i risultati:</label>
+            <select id="currency" class="form-control" formControlName="currency" required>
+              <option value="" disabled selected>Seleziona la valuta</option>
+              <option value="eur">EUR</option>
+              <option value="usd">USD</option>
+              <option value="sek">SEK</option>
+              <option value="sek">NOK</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 text-center mt-4">
+          <button type="submit" class="btn mt-3 ef-btn-cta" [disabled]="!form.valid">Calcola la footprint</button>
+        </div>
+      </div>
+
+    </form>
+</div>
+
