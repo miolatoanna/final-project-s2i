@@ -1,5 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {RequestsService} from "../../services/requests.service";
+import {IRequest, IResult} from "../../models/interfaces";
 
 
 @Component({
@@ -7,22 +9,34 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
   templateUrl: './request.component.html',
   styleUrls: ['./request.component.scss']
 })
-export class RequestComponent {
+export class RequestComponent implements OnInit{
   form: FormGroup;
+  response: IResult | null = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private service: RequestsService) {
     this.form = this.fb.group({
-      departureCode: ['', Validators.required],
+      originCode: ['', Validators.required],
       destinationCode: ['', Validators.required],
       passengers: ['', [Validators.required, Validators.min(1)]],
-      flightClass: ['', Validators.required],
+      cabinClass: ['', Validators.required],
       currency: ['', Validators.required]
     });
   }
 
-  onSubmit() {
+  ngOnInit() {}
+
+  onSubmit(): void {
     if (this.form.valid) {
-      console.log(this.form.value);
+      const { originCode, destinationCode, cabinClass, currency } = this.form.value;
+      this.service.getFootprint(
+        originCode,
+        destinationCode,
+        cabinClass,
+        [currency]
+      )
+        .subscribe((res) => {
+          console.log('response', res);
+        })
     }
   }
 

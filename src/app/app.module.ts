@@ -10,6 +10,7 @@ import { ResultComponent } from './components/result/result.component';
 import { HeaderComponent } from './components/header/header.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { FooterComponent } from './components/footer/footer.component';
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { FooterComponent } from './components/footer/footer.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     ButtonModule,
     InputTextModule,
     NoopAnimationsModule,
