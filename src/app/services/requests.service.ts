@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import {environments} from "../../environments/environments";
 import {Observable} from "rxjs";
 import {IResult} from "../models/interfaces";
+import {API_KEY} from "../../../api_config";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RequestsService {
   private baseUrl: string = environments.server_url;
-  private apiKey: string = environments.api_key;
+  private apiKey: string = API_KEY;
 
   constructor(private http: HttpClient) {}
 
@@ -26,7 +27,7 @@ export class RequestsService {
   ): Observable<IResult> {
 
     const headers = new HttpHeaders({
-      'Authorization': 'Basic ' + btoa(this.apiKey + ':'),
+      'Authorization': 'Basic ' + btoa(this.apiKey),
       'Content-Type': 'application/x-www-form-urlencoded'
     });
 
