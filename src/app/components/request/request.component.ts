@@ -1,17 +1,32 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RequestsService} from "../../services/requests.service";
-import {IRequest, IResult} from "../../models/interfaces";
-
+import {IResult} from "../../models/interfaces";
 
 @Component({
   selector: 'app-request',
   templateUrl: './request.component.html',
   styleUrls: ['./request.component.scss']
 })
-export class RequestComponent implements OnInit{
+export class RequestComponent implements OnInit {
   form: FormGroup;
-  response: IResult | null = null;
+  result: IResult | null = null;
+  isLoading: boolean = false;
+  footprintForPassenger: number = 0;
+
+  currencies = [
+    { label: 'EUR', value: 'EUR' },
+    { label: 'USD', value: 'USD' },
+    { label: 'SEK', value: 'SEK' },
+    { label: 'NOK', value: 'NOK' }
+  ];
+
+  cabin_classes = [
+    {label: 'Economy', value: 'economy'},
+    {label: 'Premium Economy', value: 'premium_economy'},
+    {label: 'Business', value: 'business'},
+    {label: 'First', value: 'first'}
+  ]
 
   constructor(private fb: FormBuilder, private service: RequestsService) {
     this.form = this.fb.group({
@@ -19,26 +34,36 @@ export class RequestComponent implements OnInit{
       destinationCode: ['', Validators.required],
       passengers: ['', [Validators.required, Validators.min(1)]],
       cabinClass: ['', Validators.required],
-      currency: ['', Validators.required]
+      currency: [[], Validators.required]
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   onSubmit(): void {
     if (this.form.valid) {
-      const { originCode, destinationCode, cabinClass, currency } = this.form.value;
+      this.isLoading = true;
+      this.result = null;
+      const {originCode, destinationCode, cabinClass, currency, passengers} = this.form.value;
       this.service.getFootprint(
         originCode,
         destinationCode,
         cabinClass,
         [currency]
       )
-        .subscribe((res) => {
-          console.log('response', res);
-        })
+        .subscribe((res: IResult) => {
+          this.result = res;
+          this.isLoading = false;
+          this.singleFootprint(passengers, res.footprint);
+        }, (error) => {
+          console.error('Error fetching footprint', error);
+          this.isLoading = false;
+        });
     }
   }
 
-
+  singleFootprint(passengers: number, totalFootprint: number) {
+    return this.footprintForPassenger = Math.round(totalFootprint / passengers);
+  }
 }

@@ -14,11 +14,6 @@ export class RequestsService {
 
   constructor(private http: HttpClient) {}
 
-  // /**
-  //  * API to get information about flight footprint based on the entered parameters
-  //  * @param body: origin airport code, destination airport code, cabin class, currency
-  //  */
-
   getFootprint(
     originCode: string,
     destinationCode: string,
@@ -38,8 +33,6 @@ export class RequestsService {
     currencies.forEach((currency, index) => {
       params = params.append(`currencies[${index}]`, currency.toString());
     });
-    console.log('params', params)
-
     return this.http.get<IResult>(`${this.baseUrl}/v1/flight_footprint`, {headers, params});
   }
 }
