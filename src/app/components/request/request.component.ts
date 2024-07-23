@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RequestsService} from "../../services/requests.service";
 import {IResult} from "../../models/interfaces";
@@ -8,7 +8,7 @@ import {IResult} from "../../models/interfaces";
   templateUrl: './request.component.html',
   styleUrls: ['./request.component.scss']
 })
-export class RequestComponent implements OnInit {
+export class RequestComponent {
   form: FormGroup;
   result: IResult | null = null;
   isLoading: boolean = false;
@@ -43,9 +43,6 @@ export class RequestComponent implements OnInit {
       cabinClass: ['', Validators.required],
       currency: [[], Validators.required]
     });
-  }
-
-  ngOnInit() {
   }
 
   getAirportOrigin() {

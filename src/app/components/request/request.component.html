@@ -48,8 +48,8 @@
     </div>
 
     <div class="row" *ngIf="!result">
-      <div class="col-md-12 text-center mt-4 pb-5">
-        <button type="submit" class="btn mt-3 ef-btn-cta" [disabled]="!form.valid">Calculate your footprint</button>
+      <div class="col-md-12 text-center my-4 pb-5">
+        <button type="submit" class="btn mt-3 ef-btn-cta" [disabled]="!form.valid" (click)="onSubmit()">Calculate your footprint</button>
       </div>
     </div>
 
@@ -67,10 +67,16 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12 text-center mt-4 pb-5">
+      <div class="col-md-12 text-center mt-5 pb-5">
         <button type="submit" class="btn mt-3 ef-btn-cta" (click)="goBack()">Back</button>
       </div>
     </div>
   </div>
+
+
+  <div *ngIf="isLoading">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+
 </div>
 

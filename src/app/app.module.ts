@@ -12,6 +12,7 @@ import { HeaderComponent } from './components/header/header.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { FooterComponent } from './components/footer/footer.component';
 import {NgSelectModule} from "@ng-select/ng-select";
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import {NgSelectModule} from "@ng-select/ng-select";
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
+    ProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
