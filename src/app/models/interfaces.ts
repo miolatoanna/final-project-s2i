@@ -22,3 +22,24 @@ export interface IResult {
 }
 
 
+export interface IAirportData {
+  data: {
+    attributes: IAirportAttributes;
+    id: string;
+    type: string;
+  }
+}
+
+export interface IAirportAttributes {
+  altitude: number;
+  city: string;
+  country: string;
+  iata: string;
+  icao: string;
+  latitude: string;
+  longitude: string;
+  name: string;
+  timezone: string;
+}
+
+

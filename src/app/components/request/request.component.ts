@@ -12,7 +12,15 @@ export class RequestComponent implements OnInit {
   form: FormGroup;
   result: IResult | null = null;
   isLoading: boolean = false;
-  footprintForPassenger: number = 0;
+  footprintPerPassenger: number = 0;
+  originAirportObj = {
+    id: '',
+    name: ''
+  }
+  destinationAirportObj = {
+    id: '',
+    name: ''
+  }
 
   currencies = [
     { label: 'EUR', value: 'EUR' },
@@ -20,7 +28,6 @@ export class RequestComponent implements OnInit {
     { label: 'SEK', value: 'SEK' },
     { label: 'NOK', value: 'NOK' }
   ];
-
   cabin_classes = [
     {label: 'Economy', value: 'economy'},
     {label: 'Premium Economy', value: 'premium_economy'},
@@ -41,14 +48,38 @@ export class RequestComponent implements OnInit {
   ngOnInit() {
   }
 
+  getAirportOrigin() {
+    const originId = this.form.get('originCode')?.value;
+    this.service.getAirportsData(originId).subscribe((res) => {
+      this.originAirportObj.id = res.data.id;
+      this.originAirportObj.name = res.data.attributes.name
+      this.form.patchValue({
+        originCode: this.originAirportObj.name
+      })
+    })
+  }
+
+  getAirportDestination() {
+    const destinationId = this.form.get('destinationCode')?.value;
+    this.service.getAirportsData(destinationId).subscribe((res) => {
+      this.destinationAirportObj.id = res.data.id;
+      this.destinationAirportObj.name = res.data.attributes.name;
+      this.form.patchValue({
+        destinationCode: this.destinationAirportObj.name
+      })
+    })
+  }
+
+
+
   onSubmit(): void {
     if (this.form.valid) {
       this.isLoading = true;
       this.result = null;
-      const {originCode, destinationCode, cabinClass, currency, passengers} = this.form.value;
+      const {cabinClass, currency, passengers} = this.form.value;
       this.service.getFootprint(
-        originCode,
-        destinationCode,
+        this.originAirportObj.id,
+        this.destinationAirportObj.id,
         cabinClass,
         [currency]
       )
@@ -64,6 +95,11 @@ export class RequestComponent implements OnInit {
   }
 
   singleFootprint(passengers: number, totalFootprint: number) {
-    return this.footprintForPassenger = Math.round(totalFootprint / passengers);
+    return this.footprintPerPassenger = Math.round(totalFootprint * passengers);
+  }
+
+  goBack() {
+    this.form.reset();
+    this.result = null;
   }
 }
