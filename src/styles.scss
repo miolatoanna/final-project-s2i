@@ -54,4 +54,9 @@ html, body {
     text-align: center !important;
   }
 
-
+.ng-select .ng-has-value .ng-placeholder {
+  color: var(--ef-dark) !important;
+}
+.ng-select .ng-select-container {
+  border: none;
+}

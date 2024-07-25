@@ -9,7 +9,6 @@
             class="form-control"
             bindLabel="name"
             bindValue="code"
-            placeholder="Departure airport.."
             formControlName="originCode"
             required>
           </ng-select>
@@ -21,14 +20,13 @@
             class="form-control"
             bindLabel="name"
             bindValue="code"
-            placeholder="Destination airport.."
             formControlName="destinationCode"
             required>
           </ng-select>
         </div>
         <div class="form-group mt-2">
           <label for="passengers" class="ef-form-label">Number of passengers:</label>
-          <input type="number" placeholder="Number of passengers.." id="passengers" class="form-control" min="1"
+          <input type="number" id="passengers" class="form-control number-pass" min="1"
                  formControlName="passengers" required/>
         </div>
         <div class="form-group mt-2">
@@ -38,7 +36,6 @@
             class="form-control"
             bindLabel="label"
             bindValue="value"
-            placeholder="Select the flight class"
             formControlName="cabinClass"
             [multiple]="false"
             required>
@@ -51,7 +48,6 @@
             class="form-control"
             bindLabel="label"
             bindValue="value"
-            placeholder="Select your currency"
             formControlName="currency"
             [multiple]="true"
             required>
