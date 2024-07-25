@@ -1,18 +1,19 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RequestsService} from "../../services/requests.service";
-import {IResult} from "../../models/interfaces";
+import {IAirportInfo, IResult} from "../../models/interfaces";
 
 @Component({
   selector: 'app-request',
   templateUrl: './request.component.html',
   styleUrls: ['./request.component.scss']
 })
-export class RequestComponent {
+export class RequestComponent implements OnInit {
   form: FormGroup;
   result: IResult | null = null;
   isLoading: boolean = false;
   footprintPerPassenger: number = 0;
+  airports: IAirportInfo[] = [];
   originAirportObj = {
     id: '',
     name: ''
@@ -23,10 +24,10 @@ export class RequestComponent {
   }
 
   currencies = [
-    { label: 'EUR', value: 'EUR' },
-    { label: 'USD', value: 'USD' },
-    { label: 'SEK', value: 'SEK' },
-    { label: 'NOK', value: 'NOK' }
+    {label: 'EUR', value: 'EUR'},
+    {label: 'USD', value: 'USD'},
+    {label: 'SEK', value: 'SEK'},
+    {label: 'NOK', value: 'NOK'}
   ];
   cabin_classes = [
     {label: 'Economy', value: 'economy'},
@@ -45,29 +46,37 @@ export class RequestComponent {
     });
   }
 
-  getAirportOrigin() {
-    const originId = this.form.get('originCode')?.value;
-    this.service.getAirportsData(originId).subscribe((res) => {
-      this.originAirportObj.id = res.data.id;
-      this.originAirportObj.name = res.data.attributes.name
-      this.form.patchValue({
-        originCode: this.originAirportObj.name
-      })
+  ngOnInit() {
+    this.service.getAirportsFromJson().subscribe((res) => {
+      this.airports = res;
     })
   }
 
-  getAirportDestination() {
-    const destinationId = this.form.get('destinationCode')?.value;
-    this.service.getAirportsData(destinationId).subscribe((res) => {
-      this.destinationAirportObj.id = res.data.id;
-      this.destinationAirportObj.name = res.data.attributes.name;
+  getAirportOrigin(event: IAirportInfo) {
+    if (event) {
+      this.originAirportObj = {
+        id: event.code,
+        name: event.name
+      }
+
       this.form.patchValue({
-        destinationCode: this.destinationAirportObj.name
+        originCode: event.name
       })
-    })
+    }
   }
 
+  getAirportDestination(event: IAirportInfo) {
+    if (event) {
+      this.destinationAirportObj = {
+        id: event.code,
+        name: event.name
+      }
 
+      this.form.patchValue({
+        destinationCode: event.name
+      })
+    }
+  }
 
   onSubmit(): void {
     if (this.form.valid) {
@@ -78,14 +87,14 @@ export class RequestComponent {
         this.originAirportObj.id,
         this.destinationAirportObj.id,
         cabinClass,
-        [currency]
+        currency
       )
         .subscribe((res: IResult) => {
           this.result = res;
           this.isLoading = false;
           this.singleFootprint(passengers, res.footprint);
         }, (error) => {
-          console.error('Error fetching footprint', error);
+          console.error('Error', error);
           this.isLoading = false;
         });
     }

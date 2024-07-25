@@ -3,15 +3,30 @@
     <div class="row">
       <div class="col-md-12">
         <div class="form-group mt-2">
-          <label for="originCode" class="ef-form-label">Departure airport:</label>
-          <input type="text" placeholder="Departure airport.." id="originCode" class="form-control"
-                 formControlName="originCode" required (change)="getAirportOrigin()"/>
-          <ng-template *ngIf="isLoading">Loading</ng-template>
+          <label class="ef-form-label">Departure airport:</label>
+          <ng-select
+            [items]="airports"
+            class="form-control"
+            bindLabel="name"
+            bindValue="id"
+            placeholder="Departure airport.."
+            formControlName="originCode"
+            (change)="getAirportOrigin($event)"
+            required>
+          </ng-select>
         </div>
         <div class="form-group mt-2">
-          <label for="destinationCode" class="ef-form-label">Destination airport:</label>
-          <input type="text" placeholder="Destination airport.." id="destinationCode" class="form-control"
-                 formControlName="destinationCode" required (change)="getAirportDestination()"/>
+          <label class="ef-form-label">Destination airport:</label>
+          <ng-select
+            [items]="airports"
+            class="form-control"
+            bindLabel="name"
+            bindValue="id"
+            placeholder="Destination airport.."
+            formControlName="destinationCode"
+            (change)="getAirportDestination($event)"
+            required>
+          </ng-select>
         </div>
         <div class="form-group mt-2">
           <label for="passengers" class="ef-form-label">Number of passengers:</label>
@@ -49,23 +64,30 @@
 
     <div class="row" *ngIf="!result">
       <div class="col-md-12 text-center my-4 pb-5">
-        <button type="submit" class="btn mt-3 ef-btn-cta" [disabled]="!form.valid" (click)="onSubmit()">Calculate your footprint</button>
+        <button type="submit" class="btn mt-3 ef-btn-cta" [disabled]="!form.valid">
+          Calculate your footprint
+        </button>
       </div>
     </div>
 
   </form>
 
-
   <div class="result-wrapper" *ngIf="result">
-    <h3 class="text-center mt-4 ef-title">Your flight footprint</h3>
-    <p class="text-center ef-text mt-4">Total footprint: <span class="result-footprint">{{ footprintPerPassenger }} kg CO2e</span></p>
-    <p class="text-center ef-text mt-3">Footprint per passengers: <span class="result-footprint">{{ result.footprint }} kg CO2e</span></p>
-    <p class="text-center ef-text mt-3">Amount:</p>
-    <div class="card-wrapper d-flex flex-wrap justify-content-center">
-      <div class="card m-2 p-3 text-center mt-3" *ngFor="let offset of result.offset_prices">
-        <h5>{{ offset.amount }} {{ offset.currency }}</h5>
+    <p-card header="Your flight footprint">
+      <div class="m-0 d-flex flex-column text-center">
+        <h5 class="text-center ef-title mt-4">Total footprint:</h5>
+        <p class="result-footprint mb-3 ef-text">{{ footprintPerPassenger }} kg CO2e</p>
+
+        <h5 class="text-center ef-title mt-4">Footprint per passengers:</h5>
+        <p class="result-footprint mb-3 ef-text">{{ result.footprint }} kg CO2e</p>
+
+        <h5 class="text-center ef-title mt-4">Amount:</h5>
+        <div *ngFor="let offset of result.offset_prices">
+          <p class="result-footprint mb-3 ef-text" *ngIf="offset.locale !== 'de-DE'">{{ offset.amount }} {{ offset.currency }}</p>
+        </div>
       </div>
-    </div>
+    </p-card>
+
     <div class="row">
       <div class="col-md-12 text-center mt-5 pb-5">
         <button type="submit" class="btn mt-3 ef-btn-cta" (click)="goBack()">Back</button>

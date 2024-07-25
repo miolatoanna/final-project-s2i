@@ -1,15 +1,3 @@
-export interface ISegments {
-  origin: string,
-  destination: string,
-}
-
-export interface IOffset {
-  amount: number,
-  currency: 'EUR' | 'USD' | 'SEK' | 'NOK',
-  offset_url: string,
-  locale: string
-}
-
 export interface IRequest {
   segments: ISegments[],
   cabin_class: 'economy' | 'premium_economy' | 'business' | 'first',
@@ -21,6 +9,17 @@ export interface IResult {
   offset_prices: IOffset[]
 }
 
+export interface ISegments {
+  origin: string,
+  destination: string,
+}
+
+export interface IOffset {
+  amount: number,
+  currency: 'EUR' | 'USD' | 'SEK' | 'NOK',
+  offset_url: string,
+  locale: string
+}
 
 export interface IAirportData {
   data: {
@@ -40,6 +39,27 @@ export interface IAirportAttributes {
   longitude: string;
   name: string;
   timezone: string;
+}
+
+export interface IAirportInfo {
+  code: string;
+  lat: string;
+  lon: string;
+  name: string;
+  city: string;
+  state: string;
+  country: string;
+  woeid: string;
+  tz: string;
+  phone: string;
+  type: string;
+  email: string;
+  url: string;
+  runway_length: string;
+  elev: string;
+  icao: string;
+  direct_flights: string;
+  carriers: string;
 }
 
 

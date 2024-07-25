@@ -13,7 +13,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { FooterComponent } from './components/footer/footer.component';
 import {NgSelectModule} from "@ng-select/ng-select";
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
+import { CardModule } from 'primeng/card';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    CardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
