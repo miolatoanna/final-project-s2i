@@ -2,8 +2,8 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {environments} from "../../environments/environments";
 import {Observable} from "rxjs";
-import {IAirportData, IAirportInfo, IResult} from "../models/interfaces";
-import {API_KEY, API_KEY_AIRPORT_GAP} from "../../../api_config";
+import {IAirportInfo, IResult} from "../models/interfaces";
+import {API_KEY} from "../../../api_config";
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +11,6 @@ import {API_KEY, API_KEY_AIRPORT_GAP} from "../../../api_config";
 export class RequestsService {
   private baseUrl: string = environments.server_url;
   private apiKey: string = API_KEY;
-
-  private baseUrlAirportGap: string = environments.server_url_airport_gap;
-  private apiKeyAirportGap: string = API_KEY_AIRPORT_GAP;
 
   constructor(private http: HttpClient) {}
 
@@ -52,17 +49,4 @@ export class RequestsService {
   getAirportsFromJson(): Observable<IAirportInfo[]> {
     return this.http.get<IAirportInfo[]>('../../assets/airport_code.json');
   }
-
-  /**
-   * API to get data of airport selected by id
-   * @param id code of airport selected
-   */
-  // getAirportsData(id: string): Observable<IAirportData> {
-  //   const headers = new HttpHeaders({
-  //     'Authorization': 'Bearer  ' ,
-  //     'Content-Type': 'application/json'
-  //   });
-  //   return this.http.get<IAirportData>(`${this.baseUrlAirportGap}/airports/${id}`, {headers});
-  // }
-
 }

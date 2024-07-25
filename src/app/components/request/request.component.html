@@ -8,10 +8,9 @@
             [items]="airports"
             class="form-control"
             bindLabel="name"
-            bindValue="id"
+            bindValue="code"
             placeholder="Departure airport.."
             formControlName="originCode"
-            (change)="getAirportOrigin($event)"
             required>
           </ng-select>
         </div>
@@ -21,16 +20,15 @@
             [items]="airports"
             class="form-control"
             bindLabel="name"
-            bindValue="id"
+            bindValue="code"
             placeholder="Destination airport.."
             formControlName="destinationCode"
-            (change)="getAirportDestination($event)"
             required>
           </ng-select>
         </div>
         <div class="form-group mt-2">
           <label for="passengers" class="ef-form-label">Number of passengers:</label>
-          <input type="number" placeholder="Number of passengers.." id="passengers" class="form-control"
+          <input type="number" placeholder="Number of passengers.." id="passengers" class="form-control" min="1"
                  formControlName="passengers" required/>
         </div>
         <div class="form-group mt-2">
@@ -79,10 +77,10 @@
         <p class="result-footprint mb-3 ef-text">{{ footprintPerPassenger }} kg CO2e</p>
 
         <h5 class="text-center ef-title mt-4">Footprint per passengers:</h5>
-        <p class="result-footprint mb-3 ef-text">{{ result.footprint }} kg CO2e</p>
+        <p class="result-footprint mb-3 ef-text">{{ result?.footprint }} kg CO2e</p>
 
         <h5 class="text-center ef-title mt-4">Amount:</h5>
-        <div *ngFor="let offset of result.offset_prices">
+        <div *ngFor="let offset of result?.offset_prices">
           <p class="result-footprint mb-3 ef-text" *ngIf="offset.locale !== 'de-DE'">{{ offset.amount }} {{ offset.currency }}</p>
         </div>
       </div>

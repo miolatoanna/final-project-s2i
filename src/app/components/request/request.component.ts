@@ -14,14 +14,6 @@ export class RequestComponent implements OnInit {
   isLoading: boolean = false;
   footprintPerPassenger: number = 0;
   airports: IAirportInfo[] = [];
-  originAirportObj = {
-    id: '',
-    name: ''
-  }
-  destinationAirportObj = {
-    id: '',
-    name: ''
-  }
 
   currencies = [
     {label: 'EUR', value: 'EUR'},
@@ -40,7 +32,7 @@ export class RequestComponent implements OnInit {
     this.form = this.fb.group({
       originCode: ['', Validators.required],
       destinationCode: ['', Validators.required],
-      passengers: ['', [Validators.required, Validators.min(1)]],
+      passengers: [null, [Validators.required]],
       cabinClass: ['', Validators.required],
       currency: [[], Validators.required]
     });
@@ -52,51 +44,30 @@ export class RequestComponent implements OnInit {
     })
   }
 
-  getAirportOrigin(event: IAirportInfo) {
-    if (event) {
-      this.originAirportObj = {
-        id: event.code,
-        name: event.name
-      }
-
-      this.form.patchValue({
-        originCode: event.name
-      })
-    }
-  }
-
-  getAirportDestination(event: IAirportInfo) {
-    if (event) {
-      this.destinationAirportObj = {
-        id: event.code,
-        name: event.name
-      }
-
-      this.form.patchValue({
-        destinationCode: event.name
-      })
-    }
-  }
-
   onSubmit(): void {
     if (this.form.valid) {
       this.isLoading = true;
       this.result = null;
-      const {cabinClass, currency, passengers} = this.form.value;
+      const {originCode, destinationCode, cabinClass, currency, passengers} = this.form.value;
       this.service.getFootprint(
-        this.originAirportObj.id,
-        this.destinationAirportObj.id,
+        originCode,
+        destinationCode,
         cabinClass,
         currency
       )
-        .subscribe((res: IResult) => {
-          this.result = res;
-          this.isLoading = false;
-          this.singleFootprint(passengers, res.footprint);
-        }, (error) => {
-          console.error('Error', error);
-          this.isLoading = false;
-        });
+        .subscribe(
+          {
+            next: (res: IResult) => {
+              this.result = res;
+              this.isLoading = false;
+              this.singleFootprint(passengers, res.footprint);
+            },
+            error: (error: any) => {
+              console.error('Error', error);
+              this.isLoading = false;
+            }
+          })
+
     }
   }
 
