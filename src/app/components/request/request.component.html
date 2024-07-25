@@ -1,48 +1,98 @@
-<div class="d-flex justify-content-center align-items-center">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-50 ef-form">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="form-group mt-2">
-            <label for="originCode" class="ef-form-label">Aeroporto di partenza:</label>
-            <input type="text" placeholder="Aeroporto di partenza.." id="originCode" class="form-control" formControlName="originCode" required />
-          </div>
-          <div class="form-group mt-2">
-            <label for="destinationCode" class="ef-form-label">Aeroporto di arrivo:</label>
-            <input type="text" placeholder="Aeroporto di arrivo.." id="destinationCode" class="form-control" formControlName="destinationCode" required />
-          </div>
-          <div class="form-group mt-2">
-            <label for="passengers" class="ef-form-label">Numero di passeggeri:</label>
-            <input type="number" placeholder="Numero di passeggeri" id="passengers" class="form-control" formControlName="passengers" required />
-          </div>
-          <div class="form-group mt-2">
-            <label for="cabinClass" class="ef-form-label">Classe di volo:</label>
-            <select id="cabinClass" class="form-control" formControlName="cabinClass" required>
-              <option value="" disabled selected>Seleziona la classe di volo</option>
-              <option value="economy">Economy</option>
-              <option value="premium_economy">Premium Economy</option>
-              <option value="business">Business</option>
-              <option value="first">First</option>
-            </select>
-          </div>
-          <div class="form-group mt-2">
-            <label for="currency" class="ef-form-label">Valuta per i risultati:</label>
-            <select id="currency" class="form-control" formControlName="currency" multiple required>
-              <option value="" disabled selected>Seleziona la valuta</option>
-              <option value="EUR">EUR</option>
-              <option value="USD">USD</option>
-              <option value="SEK">SEK</option>
-              <option value="NOK">NOK</option>
-            </select>
-          </div>
+<div class="d-flex flex-column justify-content-center align-items-center">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-50 ef-form" *ngIf="!result">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group mt-2">
+          <label class="ef-form-label">Departure airport:</label>
+          <ng-select
+            [items]="airports"
+            class="form-control"
+            bindLabel="name"
+            bindValue="code"
+            formControlName="originCode"
+            required>
+          </ng-select>
+        </div>
+        <div class="form-group mt-2">
+          <label class="ef-form-label">Destination airport:</label>
+          <ng-select
+            [items]="airports"
+            class="form-control"
+            bindLabel="name"
+            bindValue="code"
+            formControlName="destinationCode"
+            required>
+          </ng-select>
+        </div>
+        <div class="form-group mt-2">
+          <label for="passengers" class="ef-form-label">Number of passengers:</label>
+          <input type="number" id="passengers" class="form-control number-pass" min="1"
+                 formControlName="passengers" required/>
+        </div>
+        <div class="form-group mt-2">
+          <label class="ef-form-label">Flight class:</label>
+          <ng-select
+            [items]="cabin_classes"
+            class="form-control"
+            bindLabel="label"
+            bindValue="value"
+            formControlName="cabinClass"
+            [multiple]="false"
+            required>
+          </ng-select>
+        </div>
+        <div class="form-group mt-2">
+          <label class="ef-form-label">Currency:</label>
+          <ng-select
+            [items]="currencies"
+            class="form-control"
+            bindLabel="label"
+            bindValue="value"
+            formControlName="currency"
+            [multiple]="true"
+            required>
+          </ng-select>
         </div>
       </div>
+    </div>
 
-      <div class="row">
-        <div class="col-md-12 text-center mt-4">
-          <button type="submit" class="btn mt-3 ef-btn-cta" [disabled]="!form.valid">Calcola la footprint</button>
+    <div class="row" *ngIf="!result">
+      <div class="col-md-12 text-center my-4 pb-5">
+        <button type="submit" class="btn mt-3 ef-btn-cta" [disabled]="!form.valid">
+          Calculate your footprint
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="result-wrapper" *ngIf="result">
+    <p-card header="Your flight footprint">
+      <div class="m-0 d-flex flex-column text-center">
+        <h5 class="text-center ef-title mt-4">Total footprint:</h5>
+        <p class="result-footprint mb-3 ef-text">{{ footprintPerPassenger }} kg CO2e</p>
+
+        <h5 class="text-center ef-title mt-4">Footprint per passengers:</h5>
+        <p class="result-footprint mb-3 ef-text">{{ result?.footprint }} kg CO2e</p>
+
+        <h5 class="text-center ef-title mt-4">Amount:</h5>
+        <div *ngFor="let offset of result?.offset_prices">
+          <p class="result-footprint mb-3 ef-text" *ngIf="offset.locale !== 'de-DE'">{{ offset.amount }} {{ offset.currency }}</p>
         </div>
       </div>
+    </p-card>
 
-    </form>
+    <div class="row">
+      <div class="col-md-12 text-center mt-5 pb-5">
+        <button type="submit" class="btn mt-3 ef-btn-cta" (click)="goBack()">Back</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="isLoading">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+
 </div>
 

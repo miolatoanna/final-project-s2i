@@ -2,7 +2,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {environments} from "../../environments/environments";
 import {Observable} from "rxjs";
-import {IResult} from "../models/interfaces";
+import {IAirportInfo, IResult} from "../models/interfaces";
 import {API_KEY} from "../../../api_config";
 
 @Injectable({
@@ -14,11 +14,13 @@ export class RequestsService {
 
   constructor(private http: HttpClient) {}
 
-  // /**
-  //  * API to get information about flight footprint based on the entered parameters
-  //  * @param body: origin airport code, destination airport code, cabin class, currency
-  //  */
-
+  /**
+   * Api to calculate flight footprint based on some parameters below
+   * @param originCode departure airport
+   * @param destinationCode destination airport
+   * @param cabinClass cabin fligh class
+   * @param currencies currency selected, multiple values
+   */
   getFootprint(
     originCode: string,
     destinationCode: string,
@@ -38,8 +40,13 @@ export class RequestsService {
     currencies.forEach((currency, index) => {
       params = params.append(`currencies[${index}]`, currency.toString());
     });
-    console.log('params', params)
-
     return this.http.get<IResult>(`${this.baseUrl}/v1/flight_footprint`, {headers, params});
+  }
+
+  /**
+   * API to get data from json file from assets
+   */
+  getAirportsFromJson(): Observable<IAirportInfo[]> {
+    return this.http.get<IAirportInfo[]>('../../assets/airport_code.json');
   }
 }
