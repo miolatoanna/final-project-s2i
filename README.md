@@ -6,7 +6,7 @@ The purpose of the project was to calculate the footprint (ecological footprint)
 The main API calculates the ecological footprint as kg of CO2 per passenger.
 
 
-You can try my project <a href="">HERE</a> on Netlify.
+You can try my project <a href="https://ecofly-annamiolato-s2i.netlify.app/">HERE</a> on Netlify.
 
 
 # How to use
