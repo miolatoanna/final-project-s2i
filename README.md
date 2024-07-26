@@ -1,27 +1,33 @@
-# FinalS2iAngular
+## Final Project Frontend for start2impact University
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.6.
+Hello, this is my final frontend project on start2impact using Angular. 
 
-## Development server
+The purpose of the project was to calculate the footprint (ecological footprint) of an air journey from the city of departure and the city of arrival using GoClimate’s aPI.
+The main API calculates the ecological footprint as kg of CO2 per passenger.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+You can try my project <a href="">HERE</a> on Netlify.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+# How to use
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- Clone the repository with 'git clone'
+  
+- Run the command 'npm i'
+  
+- Start the project with the command 'ng serve'
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+# About the code
 
-## Running end-to-end tests
+In this project I used Angular, Bootstrap and PrimeNg for the graphics. 
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+I tried to create a simple and clean UX/UI for the user.
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# Contact
+
+If you have any suggestions, please feel free to contact me. Thank you.
+Thanks for reading and enjoy this project! Anna
+
+
